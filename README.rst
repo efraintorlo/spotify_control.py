@@ -31,6 +31,7 @@ Usage
 By default ``stupify.py`` prints the **artist-title** if ``Spotify`` is playing
 
 ::
+
     stupify.py
 
 You can extract `artist`, `title` or `album` with:

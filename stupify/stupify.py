@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 # -----------------------------------------------
 #     File:         stupify.py
 #     Author:       elchinot7
@@ -13,11 +13,14 @@
 stupify.py - Command tool for Spotify client
 Author: elchinot7
 '''
+from __future__ import print_function
 import sys
 import optparse
 import dbus
+from unidecode import unidecode
 
 __version__ = "0.1"
+
 
 def get_metadata():
     """
@@ -36,6 +39,7 @@ def get_metadata():
     #     print key, value
     return metadata
 
+
 def get_info(key):
     """Get the Spotify info
 
@@ -44,17 +48,21 @@ def get_info(key):
 
     """
     spoty_info = get_metadata()
+    MAX_LONG = 15
 
     if key == 'title':
-        return spoty_info['xesam:title']
+        info = spoty_info['xesam:title'][:MAX_LONG]
     elif key == 'album':
-        return spoty_info['xesam:album']
+        info = spoty_info['xesam:album'][:MAX_LONG]
     elif key == 'artist':
-        return spoty_info['xesam:artist'][0]
+        info = spoty_info['xesam:artist'][0][:MAX_LONG]
     elif key == 'artist-title':
-        return spoty_info['xesam:artist'][0] + '-' + spoty_info['xesam:title']
+        info = spoty_info['xesam:artist'][0][:MAX_LONG] + '-'
+        info += spoty_info['xesam:title'][:MAX_LONG]
     else:
-        return "-"
+        "-"
+    return unidecode(info)
+
 
 def main(argv=None):
     """Get spotify info
@@ -78,9 +86,9 @@ def main(argv=None):
     (options, args) = parser.parse_args(args=argv[1:])
 
     try:
-        print get_info(options.key)
-    except Exception, e:
-        print "-"
+        print(get_info(options.key))
+    except Exception:
+        print("-")
 
 if __name__ == "__main__":
     main()
